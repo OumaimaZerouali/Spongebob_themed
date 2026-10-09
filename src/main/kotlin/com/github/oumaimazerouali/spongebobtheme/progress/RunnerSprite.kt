@@ -49,7 +49,7 @@ object RunnerSprite {
         val ih = img.getHeight(null)
         if (iw <= 0 || ih <= 0) return null
         if (img !is BufferedImage) return Sheet(img, 1, iw, ih, animatedGif = true)
-        if (autoSlice) {
+        if (autoSlice && framesSetting <= 0 && !SpriteSlicer.looksLikeGrid(img)) {
             SpriteSlicer.slice(img, row)?.let { return Sheet(it.strip, it.frames, it.frameW, it.frameH, animatedGif = false) }
         }
         val frames = when {
@@ -58,6 +58,16 @@ object RunnerSprite {
             else -> 1
         }.coerceIn(1, iw)
         return Sheet(img, frames, iw / frames, ih, animatedGif = false)
+    }
+
+    /** Bar height for the "Auto" setting: pixel art stays 16 px, bigger sprites get room to breathe. */
+    fun autoBarHeight(): Int {
+        val h = sheet()?.frameH ?: return 16
+        return when {
+            h <= 16 -> 16
+            h <= 24 -> 24
+            else -> 32
+        }
     }
 
     /** Width the runner needs at the given height (keeps the frame's aspect ratio). */

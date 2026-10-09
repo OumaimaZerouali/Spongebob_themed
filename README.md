@@ -34,8 +34,8 @@ Requires IntelliJ-based IDEs 2024.3 or newer (IDEA, WebStorm, PyCharm, …).
 *Settings → Appearance & Behavior → Spongebob SquarePants Theme*
 
 - **Runner image**: a PNG sprite sheet (16 × 16 frames side by side, facing right), a single image or an animated GIF.
-- **Auto-slice**: for a ripped sheet with a solid or transparent background and uneven spacing. The plugin removes the background, picks the row you choose and finds the frames itself (labels are ignored).
-- **Bar height**: 16, 20, 24 or 32 px. Use a bigger bar for bigger sprites so they don't get shrunk.
+- **Auto-slice** (on by default): for a ripped sheet with a solid or transparent background and uneven spacing. The plugin removes the background and finds the frames itself (labels are ignored). Pick the character in the **Row** dropdown.
+- **Bar height**: Auto (default: 16 px for pixel art, 32 px for big sprites) or a fixed 16/20/24/32 px.
 - **Fill tile / Track tile**: optional 16 px high tiles for the loaded and empty part of the bar.
 - Untick the checkbox to get the normal progress bar back, while keeping the colors.
 

@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## [1.3.0]
+### Changed
+- Auto-slice is on by default; small square pixel-art strips are still read as a grid
+- Row picker is a dropdown listing every row the sheet has, with its frame count
+- Bar height defaults to Auto (16 px for pixel art, 32 px for big sprites)
+
 ## [1.2.0]
 ### Added
 - Auto-slice for ripped sprite sheets: background removal, row selection, frame detection

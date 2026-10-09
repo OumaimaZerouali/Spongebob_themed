@@ -216,7 +216,10 @@ open class SpongeProgressBarUI : BasicProgressBarUI() {
         }
     }
 
-    private fun barHeight(): Int = SpongeSettings.stateOrDefault().barHeight.coerceIn(8, 64)
+    private fun barHeight(): Int {
+        val chosen = SpongeSettings.stateOrDefault().barHeight
+        return if (chosen > 0) chosen.coerceIn(8, 64) else RunnerSprite.autoBarHeight()
+    }
 
     private fun easeInOut(t: Double): Double = 0.5 - cos(t * PI) / 2
 }
