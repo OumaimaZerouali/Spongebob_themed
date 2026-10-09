@@ -7,10 +7,6 @@ build
 *.iml
 .DS_Store
 
-# Your own runner/tile images - keep them out of the public repo
-my-sprites/
-
-# Plugin signing keys - never commit these
 *.pem
 *.crt
 *.key
