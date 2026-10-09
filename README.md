@@ -16,7 +16,7 @@ A dark, underwater IntelliJ theme straight from the bottom of the ocean — plus
 
 **From a release (easiest)**
 
-1. Download the latest `.zip` from [Releases](https://github.com/OumaimaZerouali/spongebob_theme/releases/latest).
+1. Download the latest `.zip` from [Releases](https://github.com/OumaimaZerouali/Spongebob_themed/releases/latest).
 2. IntelliJ → *Settings → Plugins → ⚙️ → Install Plugin from Disk…* → choose the zip.
 3. *Settings → Appearance & Behavior → Appearance → Theme* → **Spongebob**.
 
