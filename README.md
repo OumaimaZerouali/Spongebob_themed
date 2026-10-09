@@ -39,7 +39,7 @@ Requires IntelliJ-based IDEs 2024.3 or newer (IDEA, WebStorm, PyCharm, …).
 
 Specs, blank canvases and working examples are in [`templates/`](templates/README.md).
 
-The repository only ships the built-in jellyfish. Images you choose stay on your machine.
+The repository only ships the built-in jellyfish. Images you choose stay on your machine. Tip: keep them in a `my-sprites/` folder, which is git-ignored.
 
 ## Palette
 
@@ -61,7 +61,13 @@ The repository only ships the built-in jellyfish. Images you choose stay on your
 
 ## Disclaimer
 
-Unofficial fan project, not affiliated with or endorsed by Nickelodeon or Paramount. No official artwork is included. Free and non-commercial.
+Unofficial, non-commercial fan project. Not affiliated with, sponsored or endorsed by Nickelodeon, Paramount or Viacom.
+SpongeBob SquarePants is a trademark of Viacom International Inc. No official artwork, logos or characters are included in this repository.
+If you are a rights holder and want something changed, please open an issue.
+
+## Credits
+
+Build setup based on the [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template) (Apache 2.0).
 
 ## License
 
