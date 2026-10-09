@@ -64,8 +64,7 @@ The repository only ships the built-in jellyfish. Images you choose stay on your
 ## Disclaimer
 
 Unofficial, non-commercial fan project. Not affiliated with, sponsored or endorsed by Nickelodeon, Paramount or Viacom.
-SpongeBob SquarePants is a trademark of Viacom International Inc. No official artwork, logos or characters are included in this repository.
-If you are a rights holder and want something changed, please open an issue.
+SpongeBob SquarePants is a trademark of Viacom International Inc. If you are a rights holder and want something changed, please open an issue.
 
 ## Credits
 

@@ -6,6 +6,3 @@
 build
 *.iml
 .DS_Store
-
-# Your own runner/tile images - keep them out of the public repo
-my-sprites/
