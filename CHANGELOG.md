@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+## [1.3.1]
+### Fixed
+- A leftover grid frame count no longer switches auto-slice off; the field is greyed out while auto-slice is on
+
 ## [1.3.0]
 ### Changed
 - Auto-slice is on by default; small square pixel-art strips are still read as a grid

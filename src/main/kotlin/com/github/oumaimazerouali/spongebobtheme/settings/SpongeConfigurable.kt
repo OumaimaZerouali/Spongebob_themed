@@ -68,6 +68,7 @@ class SpongeConfigurable : Configurable {
         rowBox.model = DefaultComboBoxModel(options.toTypedArray())
         rowBox.selectedItem = options.firstOrNull { it.row == select } ?: options.first()
         rowBox.isEnabled = autoSliceBox.isSelected && options.size > 1
+        framesSpinner.isEnabled = !autoSliceBox.isSelected
     }
 
     private val selectedRow get() = (rowBox.selectedItem as? RowOption)?.row ?: 1
@@ -92,7 +93,7 @@ class SpongeConfigurable : Configurable {
             .addLabeledComponent("Frame duration (ms):", frameMsSpinner)
             .addLabeledComponent("Bar height:", barHeightBox)
             .addLabeledComponent("Grid frames (advanced):", framesSpinner)
-            .addComponentToRightColumn(hint("0 = automatic. Only for sheets with equal-width frames that touch each other."))
+            .addComponentToRightColumn(hint("Only used with auto-slice off. 0 = automatic (square frames)."))
             .addSeparator()
             .addLabeledComponent("Fill tile:", fillField)
             .addLabeledComponent("Track tile:", trackField)

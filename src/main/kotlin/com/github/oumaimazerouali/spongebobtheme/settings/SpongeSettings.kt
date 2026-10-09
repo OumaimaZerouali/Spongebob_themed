@@ -14,7 +14,7 @@ class SpongeSettingsState : BaseState() {
     /** PNG sprite sheet, single image or animated GIF used as the runner. Empty = built-in jellyfish. */
     var runnerImagePath by string()
 
-    /** Frames in a grid sheet (laid out left to right). 0 = auto. Setting it switches auto-slice off for that image. */
+    /** Frames in a grid sheet (laid out left to right). 0 = auto. Only used when auto-slice is off. */
     var runnerFrames by property(0)
 
     /** How long each sprite sheet frame is shown. */

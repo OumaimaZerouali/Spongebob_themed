@@ -49,7 +49,8 @@ object RunnerSprite {
         val ih = img.getHeight(null)
         if (iw <= 0 || ih <= 0) return null
         if (img !is BufferedImage) return Sheet(img, 1, iw, ih, animatedGif = true)
-        if (autoSlice && framesSetting <= 0 && !SpriteSlicer.looksLikeGrid(img)) {
+        // Auto-slice wins over a leftover grid frame count; small square strips are still read as a grid.
+        if (autoSlice && !SpriteSlicer.looksLikeGrid(img)) {
             SpriteSlicer.slice(img, row)?.let { return Sheet(it.strip, it.frames, it.frameW, it.frameH, animatedGif = false) }
         }
         val frames = when {
