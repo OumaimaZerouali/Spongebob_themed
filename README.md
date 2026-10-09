@@ -31,7 +31,7 @@ Requires IntelliJ-based IDEs 2024.3 or newer (IDEA, WebStorm, PyCharm, …).
 
 ## Make it yours 🎨
 
-The runner and the bar are fully customizable. You can swap the jellyfish for **any character you like**: your own pixel art, a sprite sheet you found, or an animated GIF.
+The runner and the bar are fully customizable. You can swap the jellyfish/Spongebob for **any character you like**: your own pixel art, a sprite sheet you found, or an animated GIF.
 
 ### 1. Put your images in `my-sprites/`
 
@@ -46,7 +46,6 @@ spongebob_theme/
 ```
 
 `my-sprites/` is in `.gitignore`, so your images stay local, even when you commit and push.
-Please don't commit artwork you don't own to a fork.
 
 ### 2. Point the plugin at them
 
