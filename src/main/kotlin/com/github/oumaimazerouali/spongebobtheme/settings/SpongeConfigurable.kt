@@ -6,6 +6,7 @@ import com.github.oumaimazerouali.spongebobtheme.progress.SpongeProgressBarUI
 import com.intellij.openapi.fileChooser.FileChooser
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory
 import com.intellij.openapi.options.Configurable
+import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.ui.JBIntSpinner
 import com.intellij.ui.components.JBCheckBox
@@ -22,6 +23,9 @@ class SpongeConfigurable : Configurable {
     private val runnerField = imageField("Choose Runner Image", "PNG sprite sheet (frames left to right), single PNG/JPG, or animated GIF.")
     private val framesSpinner = JBIntSpinner(0, 0, 256)
     private val frameMsSpinner = JBIntSpinner(100, 16, 2000, 10)
+    private val autoSliceBox = JBCheckBox("Auto-slice: make the background colour transparent and find the frames")
+    private val rowSpinner = JBIntSpinner(0, 0, 50)
+    private val barHeightBox = ComboBox(arrayOf(16, 20, 24, 32))
     private val fillField = imageField("Choose Fill Tile", "Repeated over the loaded part of the bar.")
     private val trackField = imageField("Choose Track Tile", "Repeated over the empty part of the bar.")
     private var previewTimer: Timer? = null
@@ -53,10 +57,14 @@ class SpongeConfigurable : Configurable {
             .addLabeledComponent("Frames in sheet:", framesSpinner)
             .addComponentToRightColumn(hint("0 = auto (image width ÷ height, so square frames). 1 = single image."))
             .addLabeledComponent("Frame duration (ms):", frameMsSpinner)
+            .addComponent(autoSliceBox)
+            .addLabeledComponent("Row in sheet:", rowSpinner)
+            .addComponentToRightColumn(hint("For ripped sheets with a solid background. 1 = top row, 0 = whole image."))
+            .addLabeledComponent("Bar height (px):", barHeightBox)
             .addSeparator()
             .addLabeledComponent("Fill tile:", fillField)
             .addLabeledComponent("Track tile:", trackField)
-            .addComponentToRightColumn(hint("Optional, 16 px high, repeated sideways. Empty = drawn water. Clear a field to reset it."))
+            .addComponentToRightColumn(hint("Optional, bar height high (16 px by default), repeated sideways. Empty = drawn water. Clear a field to reset it."))
             .addSeparator()
             .addLabeledComponent("Preview (press Apply to update):", determinate)
             .addComponentToRightColumn(indeterminate)
@@ -73,6 +81,9 @@ class SpongeConfigurable : Configurable {
             runnerField.value() != state.runnerImagePath ||
             framesSpinner.number != state.runnerFrames ||
             frameMsSpinner.number != state.frameMillis ||
+            autoSliceBox.isSelected != state.autoSlice ||
+            rowSpinner.number != state.sliceRow ||
+            (barHeightBox.selectedItem as Int) != state.barHeight ||
             fillField.value() != state.fillTilePath ||
             trackField.value() != state.trackTilePath
 
@@ -81,6 +92,9 @@ class SpongeConfigurable : Configurable {
         state.runnerImagePath = runnerField.value()
         state.runnerFrames = framesSpinner.number
         state.frameMillis = frameMsSpinner.number
+        state.autoSlice = autoSliceBox.isSelected
+        state.sliceRow = rowSpinner.number
+        state.barHeight = barHeightBox.selectedItem as Int
         state.fillTilePath = fillField.value()
         state.trackTilePath = trackField.value()
         RunnerSprite.invalidate()
@@ -92,6 +106,9 @@ class SpongeConfigurable : Configurable {
         runnerField.text = state.runnerImagePath ?: ""
         framesSpinner.number = state.runnerFrames
         frameMsSpinner.number = state.frameMillis
+        autoSliceBox.isSelected = state.autoSlice
+        rowSpinner.number = state.sliceRow
+        barHeightBox.selectedItem = state.barHeight
         fillField.text = state.fillTilePath ?: ""
         trackField.text = state.trackTilePath ?: ""
     }

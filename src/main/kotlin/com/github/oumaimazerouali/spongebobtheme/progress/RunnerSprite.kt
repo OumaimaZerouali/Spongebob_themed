@@ -22,19 +22,38 @@ import kotlin.math.sin
  */
 object RunnerSprite {
 
-    fun invalidate() = PixelImages.invalidate()
+    fun invalidate() {
+        PixelImages.invalidate()
+        cacheKey = null
+        cacheSheet = null
+    }
 
     private class Sheet(val image: Image, val frames: Int, val frameW: Int, val frameH: Int, val animatedGif: Boolean)
+
+    private var cacheKey: Any? = null
+    private var cacheSheet: Sheet? = null
 
     private fun sheet(): Sheet? {
         val settings = SpongeSettings.stateOrDefault()
         val img = PixelImages.load(settings.runnerImagePath) ?: return null
+        val key = listOf(img, settings.autoSlice, settings.sliceRow, settings.runnerFrames)
+        if (key != cacheKey) {
+            cacheKey = key
+            cacheSheet = buildSheet(img, settings.autoSlice, settings.sliceRow, settings.runnerFrames)
+        }
+        return cacheSheet
+    }
+
+    private fun buildSheet(img: Image, autoSlice: Boolean, row: Int, framesSetting: Int): Sheet? {
         val iw = img.getWidth(null)
         val ih = img.getHeight(null)
         if (iw <= 0 || ih <= 0) return null
         if (img !is BufferedImage) return Sheet(img, 1, iw, ih, animatedGif = true)
+        if (autoSlice) {
+            SpriteSlicer.slice(img, row)?.let { return Sheet(it.strip, it.frames, it.frameW, it.frameH, animatedGif = false) }
+        }
         val frames = when {
-            settings.runnerFrames > 0 -> settings.runnerFrames
+            framesSetting > 0 -> framesSetting
             iw % ih == 0 -> iw / ih // square frames side by side
             else -> 1
         }.coerceIn(1, iw)

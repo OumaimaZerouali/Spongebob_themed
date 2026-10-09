@@ -48,7 +48,7 @@ open class SpongeProgressBarUI : BasicProgressBarUI() {
     }
 
     override fun getPreferredSize(c: JComponent): Dimension =
-        Dimension(super.getPreferredSize(c).width, JBUI.scale(18))
+        Dimension(super.getPreferredSize(c).width, JBUI.scale(barHeight() + 2))
 
     override fun paintDeterminate(g: Graphics, c: JComponent) = paintBar(g, indeterminate = false)
 
@@ -66,7 +66,7 @@ open class SpongeProgressBarUI : BasicProgressBarUI() {
             val w = bar.width - ins.left - ins.right
             val availH = bar.height - ins.top - ins.bottom
             if (w <= 0 || availH <= 0) return
-            val h = min(availH, JBUI.scale(16))
+            val h = min(availH, JBUI.scale(barHeight()))
             val x = ins.left
             val y = ins.top + (availH - h) / 2
             val now = System.currentTimeMillis()
@@ -215,6 +215,8 @@ open class SpongeProgressBarUI : BasicProgressBarUI() {
             g.draw(Ellipse2D.Float((bx - r).toFloat(), (by - r).toFloat(), (2 * r).toFloat(), (2 * r).toFloat()))
         }
     }
+
+    private fun barHeight(): Int = SpongeSettings.stateOrDefault().barHeight.coerceIn(8, 64)
 
     private fun easeInOut(t: Double): Double = 0.5 - cos(t * PI) / 2
 }

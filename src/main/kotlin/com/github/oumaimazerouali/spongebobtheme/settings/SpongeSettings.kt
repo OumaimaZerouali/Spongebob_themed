@@ -20,6 +20,15 @@ class SpongeSettingsState : BaseState() {
     /** How long each sprite sheet frame is shown. */
     var frameMillis by property(100)
 
+    /** Remove the sheet's background colour and detect frames automatically (for ripped sheets). */
+    var autoSlice by property(false)
+
+    /** With auto-slice: which row of the sheet to use (1-based). 0 = the whole image is one row. */
+    var sliceRow by property(0)
+
+    /** Height of the bar in px (the runner is drawn this high). */
+    var barHeight by property(16)
+
     /** Optional tile repeated over the filled part of the bar. Empty = drawn water. */
     var fillTilePath by string()
 
