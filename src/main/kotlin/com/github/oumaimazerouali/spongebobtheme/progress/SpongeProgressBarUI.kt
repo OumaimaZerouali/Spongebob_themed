@@ -1,6 +1,7 @@
 package com.github.oumaimazerouali.spongebobtheme.progress
 
 import com.github.oumaimazerouali.spongebobtheme.Palette
+import com.github.oumaimazerouali.spongebobtheme.settings.SpongeSettings
 import com.intellij.util.ui.JBUI
 import java.awt.AlphaComposite
 import java.awt.BasicStroke
@@ -70,9 +71,18 @@ open class SpongeProgressBarUI : BasicProgressBarUI() {
             val y = ins.top + (availH - h) / 2
             val now = System.currentTimeMillis()
 
-            val track = RoundRectangle2D.Float(x.toFloat(), y.toFloat(), w.toFloat(), h.toFloat(), h.toFloat(), h.toFloat())
-            g.paint = GradientPaint(0f, y.toFloat(), Palette.DEEP, 0f, (y + h).toFloat(), Palette.ABYSS)
-            g.fill(track)
+            val settings = SpongeSettings.stateOrDefault()
+            val trackTile = PixelImages.load(settings.trackTilePath)
+            val fillTile = PixelImages.load(settings.fillTilePath)
+            // Pixel-art tiles get square corners; the drawn version is a rounded capsule.
+            val arc = if (trackTile != null || fillTile != null) 0f else h.toFloat()
+            val track = RoundRectangle2D.Float(x.toFloat(), y.toFloat(), w.toFloat(), h.toFloat(), arc, arc)
+            if (trackTile != null) {
+                PixelImages.tile(g, trackTile, x, y, w, h)
+            } else {
+                g.paint = GradientPaint(0f, y.toFloat(), Palette.DEEP, 0f, (y + h).toFloat(), Palette.ABYSS)
+                g.fill(track)
+            }
 
             val oldClip = g.clip
             g.clip(track)
@@ -85,8 +95,12 @@ open class SpongeProgressBarUI : BasicProgressBarUI() {
 
             if (!indeterminate) {
                 amountFull = (w * bar.percentComplete).toInt().coerceIn(0, w)
-                paintWater(g, x, y, amountFull, h, now)
-                paintRisingBubbles(g, x, y, amountFull, h, now)
+                if (fillTile != null) {
+                    PixelImages.tile(g, fillTile, x, y, amountFull, h, offset = -(now / 60).toInt())
+                } else {
+                    paintWater(g, x, y, amountFull, h, now)
+                    paintRisingBubbles(g, x, y, amountFull, h, now)
+                }
                 runnerX = (x + amountFull - runnerW).coerceIn(x, x + w - runnerW)
                 facingLeft = false
             } else {
@@ -95,16 +109,19 @@ open class SpongeProgressBarUI : BasicProgressBarUI() {
                 val p = easeInOut(if (forward) t * 2 else 2 - t * 2)
                 runnerX = x + ((w - runnerW) * p).toInt()
                 facingLeft = !forward
-                paintShimmer(g, x, y, w, h, now)
+                if (trackTile == null) paintShimmer(g, x, y, w, h, now)
                 paintTrail(g, runnerX, runnerW, y, h, facingLeft, now)
             }
 
-            RunnerSprite.paint(g, runnerX, y, runnerW, runnerH, now, facingLeft, bar)
-
             g.clip = oldClip
-            g.color = Palette.REEF
-            g.stroke = BasicStroke(JBUI.scale(1).toFloat())
-            g.draw(track)
+            if (trackTile == null) {
+                g.color = Palette.REEF
+                g.stroke = BasicStroke(JBUI.scale(1).toFloat())
+                g.draw(track)
+            }
+
+            // Runner is drawn last and unclipped, so the bar's rounded ends never cut off its pixels.
+            RunnerSprite.paint(g, runnerX, y, runnerW, runnerH, now, facingLeft, bar)
 
             if (bar.isStringPainted) paintString(g, x, y, w, h, amountFull, ins)
         } finally {

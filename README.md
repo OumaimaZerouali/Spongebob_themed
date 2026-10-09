@@ -5,8 +5,12 @@ A dark, underwater IntelliJ theme straight from the bottom of the ocean — plus
 
 - **Spongebob** UI theme and matching editor color scheme: deep-sea blues, sponge-yellow accents, coral keywords, seaweed strings and jellyfish-pink numbers.
 - **Underwater progress bar** with water, drifting light rays and bubbles. A runner swims along the front while things load (and bounces back and forth for indeterminate tasks).
-- **Bring your own runner**: pick any PNG, JPG or animated GIF in *Settings → Appearance & Behavior → Spongebob Theme*. Default is a little jellyfish.
+- **Bring your own pixel art**: a sprite sheet or animated GIF as the runner, plus optional tiles for the bar, in *Settings → Appearance & Behavior → Spongebob Theme*. Default is a little jellyfish.
 <!-- Plugin description end -->
+
+![Editor](docs/editor.png)
+
+![Underwater progress bar](docs/progress-bar.png)
 
 ## Install
 
@@ -25,29 +29,35 @@ A dark, underwater IntelliJ theme straight from the bottom of the ocean — plus
 
 Requires IntelliJ-based IDEs 2024.3 or newer (IDEA, WebStorm, PyCharm, …).
 
-## Custom runner
+## Custom runner & pixel art
 
 *Settings → Appearance & Behavior → Spongebob Theme*
 
-- **Runner image** — any PNG/JPG/animated GIF. It is scaled to the bar height and mirrored when it runs back left. A transparent background looks best; a side-view running sprite looks best of all.
+- **Runner image**: a PNG sprite sheet (16 × 16 frames side by side, facing right), a single image or an animated GIF.
+- **Fill tile / Track tile**: optional 16 px high tiles for the loaded and empty part of the bar.
 - Untick the checkbox to get the normal progress bar back, while keeping the colors.
+
+Specs, blank canvases and working examples are in [`templates/`](templates/README.md).
 
 The repository only ships the built-in jellyfish. Images you choose stay on your machine.
 
 ## Palette
 
-| Name | Hex | Used for |
+| IntelliJ element | Colour | Hex |
 |---|---|---|
-| Ocean | `#0F2E40` | editor background |
-| Deep | `#0B2533` | panels |
-| Foam | `#E6F4F1` | text |
-| Sponge | `#FFD93D` | accents, functions, caret |
-| Coral | `#FF8A5B` | keywords |
-| Seaweed | `#9BE36B` | strings |
-| Jelly | `#F7A1C4` | numbers |
-| Lagoon | `#5FD4E8` | types, links |
-| Pineapple | `#F2B04C` | annotations |
-| Urchin | `#C59BFF` | fields, constants |
+| Editor background | Deep ocean | `#073B5C` |
+| Main UI background | Midnight blue | `#041E32` |
+| Current line | Subtle ocean blue | `#0D496A` |
+| Selection | Ocean blue | `#009FE3` |
+| Caret, functions, accents | SpongeBob yellow | `#FFD521` |
+| Keywords | Patrick pink | `#F58AA8` |
+| Strings | Sandy beige | `#F5DEB3` |
+| Classes and types | Ocean cyan | `#45C7F5` |
+| Annotations | Pineapple orange | `#F47B35` |
+| Comments | Muted seafoam | `#85BDA6` |
+| Errors | Coral red | `#FF6B6B` |
+| Numbers | Seaweed green | `#9BE36B` |
+| Fields, constants | Urchin purple | `#C59BFF` |
 
 ## Disclaimer
 

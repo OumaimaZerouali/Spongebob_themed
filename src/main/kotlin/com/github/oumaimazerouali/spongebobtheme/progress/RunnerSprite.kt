@@ -11,8 +11,7 @@ import java.awt.geom.Arc2D
 import java.awt.geom.Ellipse2D
 import java.awt.geom.Path2D
 import java.awt.image.ImageObserver
-import java.io.File
-import javax.swing.ImageIcon
+import java.awt.image.BufferedImage
 import kotlin.math.max
 import kotlin.math.roundToInt
 import kotlin.math.sin
@@ -22,45 +21,50 @@ import kotlin.math.sin
  * Uses the image chosen in Settings (PNG/JPG/animated GIF) and falls back to a drawn jellyfish.
  */
 object RunnerSprite {
-    private var loadedPath: String? = null
-    private var loadedImage: Image? = null
 
-    fun invalidate() {
-        loadedPath = null
-        loadedImage = null
-    }
+    fun invalidate() = PixelImages.invalidate()
 
-    private fun customImage(): Image? {
-        val path = runCatching { SpongeSettings.getInstance().state.runnerImagePath }.getOrNull()
-            ?.takeIf { it.isNotBlank() } ?: return null
-        if (path != loadedPath) {
-            loadedPath = path
-            loadedImage = runCatching {
-                val file = File(path)
-                if (file.isFile) ImageIcon(file.absolutePath).image.takeIf { it.getWidth(null) > 0 } else null
-            }.getOrNull()
-        }
-        return loadedImage
-    }
+    private class Sheet(val image: Image, val frames: Int, val frameW: Int, val frameH: Int, val animatedGif: Boolean)
 
-    /** Width the runner needs at the given height (custom images keep their aspect ratio). */
-    fun width(height: Int): Int {
-        val img = customImage() ?: return height
+    private fun sheet(): Sheet? {
+        val settings = SpongeSettings.stateOrDefault()
+        val img = PixelImages.load(settings.runnerImagePath) ?: return null
         val iw = img.getWidth(null)
         val ih = img.getHeight(null)
-        if (iw <= 0 || ih <= 0) return height
-        return max(1, (height * iw.toDouble() / ih).roundToInt())
+        if (iw <= 0 || ih <= 0) return null
+        if (img !is BufferedImage) return Sheet(img, 1, iw, ih, animatedGif = true)
+        val frames = when {
+            settings.runnerFrames > 0 -> settings.runnerFrames
+            iw % ih == 0 -> iw / ih // square frames side by side
+            else -> 1
+        }.coerceIn(1, iw)
+        return Sheet(img, frames, iw / frames, ih, animatedGif = false)
+    }
+
+    /** Width the runner needs at the given height (keeps the frame's aspect ratio). */
+    fun width(height: Int): Int {
+        val s = sheet() ?: return height
+        return max(1, (height * s.frameW.toDouble() / s.frameH).roundToInt())
     }
 
     fun paint(g: Graphics2D, x: Int, y: Int, w: Int, h: Int, now: Long, facingLeft: Boolean, observer: ImageObserver) {
-        val img = customImage()
-        if (img != null) {
-            val bob = (sin(now / 90.0) * h * 0.06).roundToInt()
-            // Negative width mirrors the image when the runner heads back left.
-            if (facingLeft) g.drawImage(img, x + w, y + bob, -w, h, observer)
-            else g.drawImage(img, x, y + bob, w, h, observer)
-        } else {
+        val s = sheet()
+        if (s == null) {
             paintJellyfish(g, x, y, h, now, facingLeft)
+            return
+        }
+        val g2 = g.create() as Graphics2D
+        try {
+            PixelImages.setScalingHint(g2, s.frameH, h)
+            val millis = max(16, SpongeSettings.stateOrDefault().frameMillis)
+            val frame = if (s.frames > 1) ((now / millis) % s.frames).toInt() else 0
+            val sx = frame * s.frameW
+            // Swapping the destination x coordinates mirrors the frame when heading back left.
+            val dx1 = if (facingLeft) x + w else x
+            val dx2 = if (facingLeft) x else x + w
+            g2.drawImage(s.image, dx1, y, dx2, y + h, sx, 0, sx + s.frameW, s.frameH, observer)
+        } finally {
+            g2.dispose()
         }
     }
 
