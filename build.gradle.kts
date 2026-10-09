@@ -66,6 +66,22 @@ intellijPlatform {
         }
     }
 
+    // Marketplace requires signed plugins. Values come from environment variables / GitHub secrets,
+    // never from files in the repo. See README → "Publishing".
+    signing {
+        certificateChain = providers.environmentVariable("CERTIFICATE_CHAIN")
+        privateKey = providers.environmentVariable("PRIVATE_KEY")
+        password = providers.environmentVariable("PRIVATE_KEY_PASSWORD")
+    }
+
+    publishing {
+        token = providers.environmentVariable("PUBLISH_TOKEN")
+        // 1.4.0 → default (stable) channel, 1.4.0-beta.1 → "beta" channel
+        channels = providers.gradleProperty("pluginVersion").map {
+            listOf(it.substringAfter('-', "").substringBefore('.').ifEmpty { "default" })
+        }
+    }
+
     pluginVerification {
         ides {
             recommended()

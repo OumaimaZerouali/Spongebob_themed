@@ -74,6 +74,32 @@ Specs, blank canvases and working examples are in [`templates/`](templates/READM
 
 ![Pixel art guide](templates/GUIDE.png)
 
+## Publishing (maintainers)
+
+Every tag `vX.Y.Z` builds the plugin and creates a GitHub Release with the zip.
+Once the Marketplace secrets below exist, the same tag also publishes to the JetBrains Marketplace.
+
+**One-time signing key** (keep these files outside the repo; `*.pem`/`*.crt` are git-ignored anyway):
+
+```bash
+openssl genpkey -aes-256-cbc -algorithm RSA -out private_encrypted.pem -pkeyopt rsa_keygen_bits:4096
+openssl rsa -in private_encrypted.pem -out private.pem
+openssl req -key private.pem -new -x509 -days 3650 -out chain.crt
+```
+
+**First Marketplace upload (by hand):**
+
+```bash
+export CERTIFICATE_CHAIN="$(cat chain.crt)"
+export PRIVATE_KEY="$(cat private.pem)"
+export PRIVATE_KEY_PASSWORD="your-password"
+./gradlew signPlugin   # → build/distributions/*-signed.zip, upload it on plugins.jetbrains.com
+```
+
+**After that, automatic:** add GitHub secrets `PUBLISH_TOKEN` (Marketplace → Profile → My Tokens),
+`CERTIFICATE_CHAIN`, `PRIVATE_KEY` and `PRIVATE_KEY_PASSWORD`, then bump `pluginVersion`, tag and push.
+A version like `1.4.0-beta.1` goes to the `beta` channel instead of stable.
+
 ## Palette
 
 | IntelliJ element | Colour | Hex |
