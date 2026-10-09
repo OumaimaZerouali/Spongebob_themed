@@ -25,7 +25,7 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
       - name: Build plugin
         run: ./gradlew buildPlugin
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: spongebob-theme
           path: build/distributions/*.zip
