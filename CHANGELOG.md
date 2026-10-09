@@ -1,7 +1,11 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
-# spongebob_theme Changelog
+# Spongebob Theme Changelog
 
 ## [Unreleased]
+
+## [1.0.0]
 ### Added
-- Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
+- Dark "Bikini Bottom" UI theme and matching editor color scheme
+- Animated underwater progress bar with a runner that swims across while things load
+- Settings page to use your own image or animated GIF as the runner

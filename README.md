@@ -1,44 +1,58 @@
-# spongebob_theme
-
-![Build](https://github.com/OumaimaZerouali/spongebob_theme/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
-
-## Template ToDo list
-- [x] Create a new [IntelliJ Platform Plugin Template][template] project.
-- [ ] Get familiar with the [template documentation][template].
-- [ ] Adjust the [pluginGroup](./gradle.properties), [plugin ID](./src/main/resources/META-INF/plugin.xml) and [sources package](./src/main/kotlin).
-- [ ] Adjust the plugin description in `README` (see [Tips][docs:plugin-description])
-- [ ] Review the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html?from=IJPluginTemplate).
-- [ ] [Publish a plugin manually](https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginTemplate) for the first time.
-- [ ] Set the `PLUGIN_ID` in the above README badges.
-- [ ] Set the [Plugin Signing](https://plugins.jetbrains.com/docs/intellij/plugin-signing.html?from=IJPluginTemplate) related [secrets](https://github.com/JetBrains/intellij-platform-plugin-template#environment-variables).
-- [ ] Set the [Deployment Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html?from=IJPluginTemplate).
-- [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
+# Spongebob Theme
 
 <!-- Plugin description -->
-This Fancy IntelliJ Platform Plugin is going to be your implementation of the brilliant ideas that you have.
+A dark, underwater IntelliJ theme straight from the bottom of the ocean — plus a progress bar that's actually fun to watch.
 
-This specific section is a source for the [plugin.xml](/src/main/resources/META-INF/plugin.xml) file which will be extracted by the [Gradle](/build.gradle.kts) during the build process.
-
-To keep everything working, do not remove `<!-- ... -->` sections. 
+- **Spongebob** UI theme and matching editor color scheme: deep-sea blues, sponge-yellow accents, coral keywords, seaweed strings and jellyfish-pink numbers.
+- **Underwater progress bar** with water, drifting light rays and bubbles. A runner swims along the front while things load (and bounces back and forth for indeterminate tasks).
+- **Bring your own runner**: pick any PNG, JPG or animated GIF in *Settings → Appearance & Behavior → Spongebob Theme*. Default is a little jellyfish.
 <!-- Plugin description end -->
 
-## Installation
+## Install
 
-- Using the IDE built-in plugin system:
-  
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "spongebob_theme"</kbd> >
-  <kbd>Install</kbd>
-  
-- Manually:
+**From a release (easiest)**
 
-  Download the [latest release](https://github.com/OumaimaZerouali/spongebob_theme/releases/latest) and install it manually using
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
+1. Download the latest `.zip` from [Releases](https://github.com/OumaimaZerouali/spongebob_theme/releases/latest).
+2. IntelliJ → *Settings → Plugins → ⚙️ → Install Plugin from Disk…* → choose the zip.
+3. *Settings → Appearance & Behavior → Appearance → Theme* → **Spongebob**.
 
+**From source**
 
----
-Plugin based on the [IntelliJ Platform Plugin Template][template].
+```bash
+./gradlew buildPlugin        # zip ends up in build/distributions/
+./gradlew runIde             # try it in a sandbox IDE
+```
 
-[template]: https://github.com/JetBrains/intellij-platform-plugin-template
-[docs:plugin-description]: https://plugins.jetbrains.com/docs/intellij/plugin-user-experience.html#plugin-description-and-presentation
+Requires IntelliJ-based IDEs 2024.3 or newer (IDEA, WebStorm, PyCharm, …).
+
+## Custom runner
+
+*Settings → Appearance & Behavior → Spongebob Theme*
+
+- **Runner image** — any PNG/JPG/animated GIF. It is scaled to the bar height and mirrored when it runs back left. A transparent background looks best; a side-view running sprite looks best of all.
+- Untick the checkbox to get the normal progress bar back, while keeping the colors.
+
+The repository only ships the built-in jellyfish. Images you choose stay on your machine.
+
+## Palette
+
+| Name | Hex | Used for |
+|---|---|---|
+| Ocean | `#0F2E40` | editor background |
+| Deep | `#0B2533` | panels |
+| Foam | `#E6F4F1` | text |
+| Sponge | `#FFD93D` | accents, functions, caret |
+| Coral | `#FF8A5B` | keywords |
+| Seaweed | `#9BE36B` | strings |
+| Jelly | `#F7A1C4` | numbers |
+| Lagoon | `#5FD4E8` | types, links |
+| Pineapple | `#F2B04C` | annotations |
+| Urchin | `#C59BFF` | fields, constants |
+
+## Disclaimer
+
+Unofficial fan project, not affiliated with or endorsed by Nickelodeon or Paramount. No official artwork is included. Free and non-commercial.
+
+## License
+
+[MIT](LICENSE)
