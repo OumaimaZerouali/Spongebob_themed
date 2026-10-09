@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+## [1.3.2]
+### Fixed
+- Replace deprecated FileChooserDescriptorFactory.createSingleFileDescriptor() usage
+
 ## [1.3.1]
 ### Fixed
 - A leftover grid frame count no longer switches auto-slice off; the field is greyed out while auto-slice is on

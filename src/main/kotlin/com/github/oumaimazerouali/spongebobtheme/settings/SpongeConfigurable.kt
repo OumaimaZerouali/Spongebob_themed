@@ -6,7 +6,7 @@ import com.github.oumaimazerouali.spongebobtheme.progress.SpongeProgressBarInsta
 import com.github.oumaimazerouali.spongebobtheme.progress.SpongeProgressBarUI
 import com.github.oumaimazerouali.spongebobtheme.progress.SpriteSlicer
 import com.intellij.openapi.fileChooser.FileChooser
-import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory
+import com.intellij.openapi.fileChooser.FileChooserDescriptor
 import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
@@ -50,8 +50,9 @@ class SpongeConfigurable : Configurable {
 
     private fun imageField(title: String, description: String) = TextFieldWithBrowseButton().apply {
         addActionListener {
-            val descriptor = FileChooserDescriptorFactory.createSingleFileDescriptor()
-                .withFileFilter { it.extension?.lowercase() in setOf("png", "gif", "jpg", "jpeg") }
+            // Plain constructor (single file, no folders/jars): works on 2024.3 and isn't deprecated in newer IDEs.
+            val descriptor = FileChooserDescriptor(true, false, false, false, false, false)
+                .withExtensionFilter("Images", "png", "gif", "jpg", "jpeg")
                 .withTitle(title)
                 .withDescription(description)
             FileChooser.chooseFile(descriptor, null, null)?.let { text = it.path }
