@@ -1,9 +1,9 @@
-# Spongebob Theme
+# Spongebob SquarePants Theme
 
 <!-- Plugin description -->
-A dark, underwater IntelliJ theme straight from the bottom of the ocean — plus a progress bar that's actually fun to watch.
+A dark, underwater IntelliJ theme straight from the bottom of the ocean, plus a progress bar that's actually fun to watch.
 
-- **Spongebob** UI theme and matching editor color scheme: deep-sea blues, sponge-yellow accents, coral keywords, seaweed strings and jellyfish-pink numbers.
+- **Spongebob SquarePants** UI theme and matching editor color scheme: deep-sea blues, sponge-yellow accents, coral keywords, seaweed strings and jellyfish-pink numbers.
 - **Underwater progress bar** with water, drifting light rays and bubbles. A runner swims along the front while things load (and bounces back and forth for indeterminate tasks).
 - **Bring your own pixel art**: a sprite sheet or animated GIF as the runner, plus optional tiles for the bar, in *Settings → Appearance & Behavior → Spongebob Theme*. Default is a little jellyfish.
 <!-- Plugin description end -->
@@ -18,7 +18,7 @@ A dark, underwater IntelliJ theme straight from the bottom of the ocean — plus
 
 1. Download the latest `.zip` from [Releases](https://github.com/OumaimaZerouali/Spongebob_themed/releases/latest).
 2. IntelliJ → *Settings → Plugins → ⚙️ → Install Plugin from Disk…* → choose the zip.
-3. *Settings → Appearance & Behavior → Appearance → Theme* → **Spongebob**.
+3. *Settings → Appearance & Behavior → Appearance → Theme* → **Spongebob SquarePants**.
 
 **From source**
 
@@ -31,7 +31,7 @@ Requires IntelliJ-based IDEs 2024.3 or newer (IDEA, WebStorm, PyCharm, …).
 
 ## Custom runner & pixel art
 
-*Settings → Appearance & Behavior → Spongebob Theme*
+*Settings → Appearance & Behavior → Spongebob SquarePants Theme*
 
 - **Runner image**: a PNG sprite sheet (16 × 16 frames side by side, facing right), a single image or an animated GIF.
 - **Fill tile / Track tile**: optional 16 px high tiles for the loaded and empty part of the bar.
