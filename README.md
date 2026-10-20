@@ -1,8 +1,10 @@
 # SpongeBob SquarePants Theme & Progress Bar
 
+<!-- Plugin description -->
 A dark, underwater IntelliJ theme inspired by Bikini Bottom, complete with a custom editor colour scheme and an animated progress bar.
 
 Bring a little piece of the ocean into your IDE with deep-sea blues, SpongeBob-yellow highlights, Patrick-pink keywords, and a progress bar that makes waiting a little more fun.
+<!-- Plugin description end -->
 
 ## Features
 
