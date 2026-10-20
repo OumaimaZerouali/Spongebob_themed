@@ -4,6 +4,14 @@
 
 ## [Unreleased]
 
+## [1.4.0]
+### Added
+- Character sheets with labels: per character idle, run, sit, jump, wave and emote animations are detected automatically
+- Random breaks: the runner stops now and then to idle, sit, jump, wave or show an emote
+- Editor visits: now and then a character runs into the editor, sits on a class declaration and runs off again (Tools → Spongebob Theme: Visit This Editor to try it)
+- Decoration: a small image (e.g. a flower) drifting through the empty bar, recoloured and spinning now and then
+- Character picker with a "Random" option
+
 ## [1.3.2]
 ### Fixed
 - Replace deprecated FileChooserDescriptorFactory.createSingleFileDescriptor() usage

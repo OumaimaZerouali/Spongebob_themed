@@ -22,6 +22,7 @@ import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sin
+import kotlin.random.Random
 
 /**
  * Underwater progress bar: a water fill with drifting light and bubbles,
@@ -31,10 +32,15 @@ open class SpongeProgressBarUI : BasicProgressBarUI() {
 
     private companion object {
         const val FRAME_MS = 40
-        const val LAP_MS = 2600.0
+        const val SWEEP_MS = 1300.0 // one pass from left to right while indeterminate
     }
 
     private var ticker: Timer? = null
+    private val brain = RunnerBrain()
+    private val seed = Random.nextInt() // picks the character (when random) and the flower pattern
+    private var pos = 0.0 // 0..1 across the bar, indeterminate mode
+    private var dir = 1
+    private var lastTick = 0L
 
     override fun installUI(c: JComponent) {
         super.installUI(c)
@@ -87,8 +93,13 @@ open class SpongeProgressBarUI : BasicProgressBarUI() {
             val oldClip = g.clip
             g.clip(track)
 
-            val runnerH = h
-            val runnerW = min(RunnerSprite.width(runnerH), w)
+            val ch = RunnerSprite.pick(seed)
+            val frameMs = settings.frameMillis.toLong().coerceAtLeast(16)
+            brain.update(now, ch, settings.randomBreaks, frameMs)
+            val dt = if (lastTick == 0L) 0L else (now - lastTick).coerceIn(0L, 200L)
+            lastTick = now
+            val runScale = ch?.let { RunnerSprite.scaleFor(it, it.run, h) } ?: 1.0
+            val runnerW = min(ch?.let { RunnerSprite.drawWidth(it.run, runScale) } ?: h, w)
             val runnerX: Int
             val facingLeft: Boolean
             var amountFull = 0
@@ -101,16 +112,20 @@ open class SpongeProgressBarUI : BasicProgressBarUI() {
                     paintWater(g, x, y, amountFull, h, now)
                     paintRisingBubbles(g, x, y, amountFull, h, now)
                 }
+                FlowerField.paint(g, x + amountFull, y, w - amountFull, h, now, seed)
                 runnerX = (x + amountFull - runnerW).coerceIn(x, x + w - runnerW)
                 facingLeft = false
             } else {
-                val t = (now % LAP_MS.toLong()) / LAP_MS
-                val forward = t < 0.5
-                val p = easeInOut(if (forward) t * 2 else 2 - t * 2)
-                runnerX = x + ((w - runnerW) * p).toInt()
-                facingLeft = !forward
+                if (brain.moving) {
+                    pos += dir * dt / SWEEP_MS
+                    if (pos >= 1.0) { pos = 1.0; dir = -1 }
+                    if (pos <= 0.0) { pos = 0.0; dir = 1 }
+                }
+                runnerX = x + ((w - runnerW) * pos).toInt()
+                facingLeft = dir < 0
                 if (trackTile == null) paintShimmer(g, x, y, w, h, now)
-                paintTrail(g, runnerX, runnerW, y, h, facingLeft, now)
+                FlowerField.paint(g, x, y, w, h, now, seed)
+                if (brain.moving) paintTrail(g, runnerX, runnerW, y, h, facingLeft, now)
             }
 
             g.clip = oldClip
@@ -121,7 +136,15 @@ open class SpongeProgressBarUI : BasicProgressBarUI() {
             }
 
             // Runner is drawn last and unclipped, so the bar's rounded ends never cut off its pixels.
-            RunnerSprite.paint(g, runnerX, y, runnerW, runnerH, now, facingLeft, bar)
+            if (ch != null) {
+                val (anim, frame) = brain.frame(now, ch, frameMs)
+                val scale = RunnerSprite.scaleFor(ch, anim, h, maxH = availH)
+                val animW = RunnerSprite.drawWidth(anim, scale)
+                RunnerSprite.paintFrame(g, anim, frame, runnerX + (runnerW - animW) / 2, y + h, scale, facingLeft, bar)
+            } else {
+                RunnerSprite.paintJelly(g, runnerX, y, h, now, facingLeft)
+            }
+
 
             if (bar.isStringPainted) paintString(g, x, y, w, h, amountFull, ins)
         } finally {

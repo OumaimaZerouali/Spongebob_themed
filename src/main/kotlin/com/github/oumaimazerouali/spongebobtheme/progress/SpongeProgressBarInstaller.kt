@@ -1,5 +1,6 @@
 package com.github.oumaimazerouali.spongebobtheme.progress
 
+import com.github.oumaimazerouali.spongebobtheme.buddy.EditorVisits
 import com.github.oumaimazerouali.spongebobtheme.settings.SpongeSettings
 import com.intellij.ide.AppLifecycleListener
 import com.intellij.ide.ui.LafManager
@@ -53,6 +54,9 @@ class SpongeAppListener : AppLifecycleListener {
 /** Safety net: also covers installing the plugin without restarting the IDE. */
 class SpongeStartupActivity : ProjectActivity {
     override suspend fun execute(project: Project) {
-        ApplicationManager.getApplication().invokeLater { SpongeProgressBarInstaller.install() }
+        ApplicationManager.getApplication().invokeLater {
+            SpongeProgressBarInstaller.install()
+            EditorVisits.getInstance().ensureStarted()
+        }
     }
 }

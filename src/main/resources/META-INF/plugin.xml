@@ -21,4 +21,13 @@
         <listener class="com.github.oumaimazerouali.spongebobtheme.progress.SpongeAppListener"
                   topic="com.intellij.ide.AppLifecycleListener"/>
     </applicationListeners>
+
+    <actions>
+        <action id="com.github.oumaimazerouali.spongebobtheme.VisitEditor"
+                class="com.github.oumaimazerouali.spongebobtheme.buddy.VisitEditorAction"
+                text="Spongebob Theme: Visit This Editor"
+                description="Send the character to sit on a class in this editor right now">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+    </actions>
 </idea-plugin>

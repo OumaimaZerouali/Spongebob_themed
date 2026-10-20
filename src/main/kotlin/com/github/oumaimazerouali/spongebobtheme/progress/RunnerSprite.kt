@@ -17,53 +17,82 @@ import kotlin.math.roundToInt
 import kotlin.math.sin
 
 /**
- * The thing that runs over the progress bar.
- * Uses the image chosen in Settings (PNG/JPG/animated GIF) and falls back to a drawn jellyfish.
+ * The characters that run over the progress bar and visit the editor.
+ * Built from the image chosen in Settings (sprite sheet, single image or animated GIF);
+ * without one, a drawn jellyfish is used.
  */
 object RunnerSprite {
+
+    private var cacheKey: Any? = null
+    private var cached: List<CharacterSprites> = emptyList()
 
     fun invalidate() {
         PixelImages.invalidate()
         cacheKey = null
-        cacheSheet = null
+        cached = emptyList()
     }
 
-    private class Sheet(val image: Image, val frames: Int, val frameW: Int, val frameH: Int, val animatedGif: Boolean)
-
-    private var cacheKey: Any? = null
-    private var cacheSheet: Sheet? = null
-
-    private fun sheet(): Sheet? {
+    /** Characters found in the chosen image; empty = use the built-in jellyfish. */
+    fun characters(): List<CharacterSprites> {
         val settings = SpongeSettings.stateOrDefault()
-        val img = PixelImages.load(settings.runnerImagePath) ?: return null
-        val key = listOf(img, settings.autoSlice, settings.sliceRow, settings.runnerFrames)
+        val img = PixelImages.load(settings.runnerImagePath) ?: return emptyList()
+        val key = listOf(img, settings.autoSlice, settings.runnerFrames)
         if (key != cacheKey) {
             cacheKey = key
-            cacheSheet = buildSheet(img, settings.autoSlice, settings.sliceRow, settings.runnerFrames)
+            cached = runCatching { build(img, settings.autoSlice, settings.runnerFrames) }.getOrDefault(emptyList())
         }
-        return cacheSheet
+        return cached
     }
 
-    private fun buildSheet(img: Image, autoSlice: Boolean, row: Int, framesSetting: Int): Sheet? {
+    /** The character for the "Character" setting: 0 = random (stable per [seed]), otherwise 1-based. */
+    fun pick(seed: Int): CharacterSprites? {
+        val all = characters()
+        if (all.isEmpty()) return null
+        val choice = SpongeSettings.stateOrDefault().sliceRow
+        return if (choice <= 0) all[Math.floorMod(seed, all.size)] else all[(choice - 1).coerceIn(0, all.lastIndex)]
+    }
+
+    /** Describes the characters an image would give, for the settings dropdown. */
+    fun describe(img: Image, autoSlice: Boolean, framesSetting: Int): List<String> =
+        runCatching { build(img, autoSlice, framesSetting) }.getOrDefault(emptyList()).map { ch ->
+            val what = if (ch.actions.isEmpty()) "${ch.run.frames} frames" else
+                CharacterSprites.SHEET_ORDER.filter { it in ch.anims }.joinToString(", ") { it.name.lowercase() }
+            "${ch.name} – $what"
+        }
+
+    private fun build(img: Image, autoSlice: Boolean, framesSetting: Int): List<CharacterSprites> {
         val iw = img.getWidth(null)
         val ih = img.getHeight(null)
-        if (iw <= 0 || ih <= 0) return null
-        if (img !is BufferedImage) return Sheet(img, 1, iw, ih, animatedGif = true)
+        if (iw <= 0 || ih <= 0) return emptyList()
+        if (img !is BufferedImage) {
+            return listOf(CharacterSprites("Character 1", mapOf(Action.RUN to Anim(img, 1, iw, ih, animatedGif = true))))
+        }
         // Auto-slice wins over a leftover grid frame count; small square strips are still read as a grid.
         if (autoSlice && !SpriteSlicer.looksLikeGrid(img)) {
-            SpriteSlicer.slice(img, row)?.let { return Sheet(it.strip, it.frames, it.frameW, it.frameH, animatedGif = false) }
+            val layout = SpriteSlicer.analyse(img)
+            if (layout != null) {
+                val groups = layout.groups
+                val order = CharacterSprites.SHEET_ORDER
+                return if (layout.labelled && groups.size >= order.size) {
+                    groups.chunked(order.size).filter { it.size == order.size }.mapIndexed { i, chunk ->
+                        CharacterSprites("Character ${i + 1}", order.zip(chunk).toMap())
+                    }
+                } else {
+                    groups.mapIndexed { i, g -> CharacterSprites("Row ${i + 1}", mapOf(Action.RUN to g)) }
+                }
+            }
         }
         val frames = when {
             framesSetting > 0 -> framesSetting
             iw % ih == 0 -> iw / ih // square frames side by side
             else -> 1
         }.coerceIn(1, iw)
-        return Sheet(img, frames, iw / frames, ih, animatedGif = false)
+        return listOf(CharacterSprites("Character 1", mapOf(Action.RUN to Anim(img, frames, iw / frames, ih))))
     }
 
     /** Bar height for the "Auto" setting: pixel art stays 16 px, bigger sprites get room to breathe. */
     fun autoBarHeight(): Int {
-        val h = sheet()?.frameH ?: return 16
+        val h = characters().firstOrNull()?.run?.frameH ?: return 16
         return when {
             h <= 16 -> 16
             h <= 24 -> 24
@@ -71,32 +100,40 @@ object RunnerSprite {
         }
     }
 
-    /** Width the runner needs at the given height (keeps the frame's aspect ratio). */
-    fun width(height: Int): Int {
-        val s = sheet() ?: return height
-        return max(1, (height * s.frameW.toDouble() / s.frameH).roundToInt())
+    /**
+     * Scale that makes the character's run frames [targetH] high. Other animations use the same scale
+     * (a sitting character stays smaller), shrunk only when they would not fit in [maxH].
+     */
+    fun scaleFor(ch: CharacterSprites, anim: Anim, targetH: Int, maxH: Int = Int.MAX_VALUE): Double {
+        val base = targetH.toDouble() / ch.run.frameH
+        return if (anim.frameH * base > maxH) maxH.toDouble() / anim.frameH else base
     }
 
-    fun paint(g: Graphics2D, x: Int, y: Int, w: Int, h: Int, now: Long, facingLeft: Boolean, observer: ImageObserver) {
-        val s = sheet()
-        if (s == null) {
-            paintJellyfish(g, x, y, h, now, facingLeft)
-            return
-        }
+    fun drawWidth(anim: Anim, scale: Double): Int = max(1, (anim.frameW * scale).roundToInt())
+
+    /** Draws [frame] of [anim] with its bottom edge on [bottom]. */
+    fun paintFrame(
+        g: Graphics2D, anim: Anim, frame: Int, x: Int, bottom: Int, scale: Double,
+        facingLeft: Boolean, observer: ImageObserver,
+    ) {
+        val w = drawWidth(anim, scale)
+        val h = max(1, (anim.frameH * scale).roundToInt())
         val g2 = g.create() as Graphics2D
         try {
-            PixelImages.setScalingHint(g2, s.frameH, h)
-            val millis = max(16, SpongeSettings.stateOrDefault().frameMillis)
-            val frame = if (s.frames > 1) ((now / millis) % s.frames).toInt() else 0
-            val sx = frame * s.frameW
-            // Swapping the destination x coordinates mirrors the frame when heading back left.
+            PixelImages.setScalingHint(g2, anim.frameH, h)
+            val sx = Math.floorMod(frame, anim.frames) * anim.frameW
+            // Swapping the destination x coordinates mirrors the frame when heading left.
             val dx1 = if (facingLeft) x + w else x
             val dx2 = if (facingLeft) x else x + w
-            g2.drawImage(s.image, dx1, y, dx2, y + h, sx, 0, sx + s.frameW, s.frameH, observer)
+            g2.drawImage(anim.image, dx1, bottom - h, dx2, bottom, sx, 0, sx + anim.frameW, anim.frameH, observer)
         } finally {
             g2.dispose()
         }
     }
+
+    /** The built-in jellyfish, [s] px high, top-left at (x, y). */
+    fun paintJelly(g: Graphics2D, x: Int, y: Int, s: Int, now: Long, facingLeft: Boolean) =
+        paintJellyfish(g, x, y, s, now, facingLeft)
 
     private fun paintJellyfish(g: Graphics2D, x: Int, y: Int, s: Int, now: Long, facingLeft: Boolean) {
         val sf = s.toFloat()

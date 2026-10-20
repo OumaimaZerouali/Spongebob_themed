@@ -23,8 +23,20 @@ class SpongeSettingsState : BaseState() {
     /** Remove the sheet's background and detect frames automatically (ripped sheets). Small square grids still work. */
     var autoSlice by property(true)
 
-    /** With auto-slice: which row of the sheet to use, 1 = top row. */
+    /** Which character of the sheet to use, 1 = first. 0 = a random one each time. */
     var sliceRow by property(1)
+
+    /** Let the runner take short breaks (idle, sit, jump, wave, emote) when the sheet has those animations. */
+    var randomBreaks by property(true)
+
+    /** How often a character visits the editor and sits on a class: 0 off, 1 rarely, 2 sometimes, 3 often. */
+    var editorVisits by property(2)
+
+    /** Optional small image (e.g. a flower) drifting through the empty part of the bar. */
+    var decorationPath by string()
+
+    /** Recolour each copy of the decoration in a theme colour. */
+    var decorationRecolor by property(true)
 
     /** Height of the bar in px (the runner is drawn this high). 0 = auto: 16 for pixel art, bigger for big sprites. */
     var barHeight by property(0)

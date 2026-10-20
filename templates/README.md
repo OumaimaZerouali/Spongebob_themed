@@ -29,3 +29,28 @@
 Open a blank in Aseprite, LibreSprite, Piskel or Pixelorama (in Aseprite: *Import Sprite Sheet*, 16 × 16 grid),
 draw, export as PNG, then pick it in **Settings → Appearance & Behavior → Spongebob Theme** and press **Apply**.
 Editing the file and pressing Apply again reloads it.
+
+## Character sheets (animations)
+
+For more than running, use one sheet with **labels** above each group, like
+[`example-labelled-sheet.png`](example-labelled-sheet.png):
+
+```
+NAME
+◎ IDLE            ◎ WALK / RUN
+[frames…]         [frames…]
+◎ SIT        ◎ JUMP        ◎ WAVE / CELEBRATE     ◎ OTHER / EMOTES
+[frames…]    [frames…]     [frames…]              [♥ ? z !  poses]
+```
+
+- Per character exactly **six groups, in this order**: idle, run, sit, jump, wave, emote. Add more characters below.
+- Any background colour works (solid or transparent). Labels can be any text: their position marks where a group starts.
+- Small marks right above a sprite (♥, ?, zZ) stay attached to that frame.
+- Emotes are separate poses: one is picked and held. Jump plays once. Idle and sit play slower.
+
+In Settings pick the character (or **Random**), turn on **Random breaks**, and set **Editor visits**.
+
+## Decoration
+
+Any small image (e.g. a flower) for the **Decoration** setting. It is scattered over the empty part of the bar,
+drifts slowly, gets a theme colour per copy (optional) and spins now and then.
