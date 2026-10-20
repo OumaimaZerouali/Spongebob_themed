@@ -1,108 +1,182 @@
-# Spongebob SquarePants Theme
+# SpongeBob SquarePants Theme & Progress Bar
 
-<!-- Plugin description -->
-A dark, underwater IntelliJ theme straight from the bottom of the ocean, plus a progress bar that's actually fun to watch.
+A dark, underwater IntelliJ theme inspired by Bikini Bottom, complete with a custom editor colour scheme and an animated progress bar.
 
-- **Spongebob SquarePants** UI theme and matching editor color scheme: deep-ocean blues, SpongeBob-yellow caret and functions, Patrick-pink keywords, sandy strings and pineapple-orange annotations.
-- **Underwater progress bar** with water, drifting light rays and bubbles. A runner swims along the front while things load (and bounces back and forth for indeterminate tasks).
-- **Bring your own pixel art**: a sprite sheet or animated GIF as the runner, plus optional tiles for the bar, in *Settings → Appearance & Behavior → Spongebob Theme*. Default is a little jellyfish.
-<!-- Plugin description end -->
+Bring a little piece of the ocean into your IDE with deep-sea blues, SpongeBob-yellow highlights, Patrick-pink keywords, and a progress bar that makes waiting a little more fun.
 
-![Editor](docs/editor.png)
+## Features
+
+- **Underwater IDE theme**: A dark interface inspired by the ocean, with deep blues, cyan accents, and SpongeBob's signature yellow.
+- **Custom editor colour scheme**: Carefully chosen colours for keywords, functions, strings, annotations, comments, and more.
+- **Animated underwater progress bar**: A custom progress bar featuring water, drifting light rays, and bubbles.
+- **Custom animated runners**: Replace the default jellyfish with SpongeBob, Patrick, Gary, your own pixel art, or any other character you like.
+- **Custom progress bar tiles**: Use your own water and seafloor textures to personalize the loaded and empty portions of the bar.
+- **Automatic sprite-sheet detection**: Automatically detect animation frames, including frames with uneven spacing.
+- **Live preview**: Preview your custom runner and progress bar directly in the plugin settings.
+
+![SpongeBob editor theme](docs/editor.png)
+
+*The dark underwater editor theme.*
 
 ![Underwater progress bar](docs/progress-bar.png)
 
-## Install
+*The animated underwater progress bar.*
 
-**From a release (easiest)**
+## Installation
 
-1. Download the latest `.zip` from [Releases](https://github.com/OumaimaZerouali/Spongebob_themed/releases/latest).
-2. IntelliJ → *Settings → Plugins → ⚙️ → Install Plugin from Disk…* → choose the zip.
-3. *Settings → Appearance & Behavior → Appearance → Theme* → **Spongebob**.
+### Option 1: Install from a release
 
-**From source**
+This is the easiest way to get started.
+
+1. Download the latest plugin ZIP from [GitHub Releases](https://github.com/OumaimaZerouali/Spongebob_themed/releases/latest).
+2. Open your IntelliJ-based IDE.
+3. Navigate to **Settings → Plugins**.
+4. Open the settings menu using the gear icon and select **Install Plugin from Disk…**.
+5. Select the downloaded ZIP file and install the plugin.
+6. Restart the IDE if prompted.
+7. Navigate to **Settings → Appearance & Behavior → Appearance → Theme** and select **Spongebob**.
+
+You're ready to dive into Bikini Bottom!
+
+### Option 2: Build from source
+
+Clone the repository and use the Gradle wrapper to build the plugin or launch a sandbox IDE for testing.
 
 ```bash
-./gradlew buildPlugin        # zip ends up in build/distributions/
-./gradlew runIde             # try it in a sandbox IDE
+# Build the plugin
+./gradlew buildPlugin
+
+# Launch a sandbox IDE with the plugin installed
+./gradlew runIde
 ```
 
-Requires IntelliJ-based IDEs 2024.3 or newer (IDEA, WebStorm, PyCharm, …).
+The generated plugin ZIP is available in:
 
-## Make it yours 🎨
-
-The runner and the bar are fully customizable. You can swap the jellyfish/Spongebob for **any character you like**: your own pixel art, a sprite sheet you found, or an animated GIF.
-
-### 1. Put your images in `my-sprites/`
-
-Create a `my-sprites/` folder in the project (or anywhere on your machine) and drop your images in it:
-
+```text
+build/distributions/
 ```
+
+### Requirements
+
+- IntelliJ-based IDE version **2024.3 or newer**.
+- Compatible IDEs include IntelliJ IDEA, WebStorm, PyCharm, and other supported IntelliJ Platform IDEs.
+
+## Customize your progress bar
+
+The progress bar and its animated runner are customizable. You can use the built-in jellyfish or provide your own pixel art, sprite sheet, or animated GIF.
+
+### 1. Prepare your assets
+
+Create a `my-sprites/` directory in the project root, or store your images elsewhere on your machine.
+
+Example directory structure:
+
+```text
 spongebob_theme/
-└── my-sprites/            ← git-ignored, never pushed
-    ├── run-sheet.png      ← your runner (sprite sheet or GIF)
-    ├── fill.png           ← optional: loaded part of the bar
-    └── track.png          ← optional: empty part of the bar
+└── my-sprites/
+    ├── run-sheet.png   # Animated runner sprite sheet or GIF
+    ├── fill.png        # Optional: loaded portion of the bar
+    └── track.png       # Optional: empty portion of the bar
 ```
 
-`my-sprites/` is in `.gitignore`, so your images stay local, even when you commit and push.
+The `my-sprites/` directory is included in `.gitignore`, so your local artwork won't be committed or pushed to the repository by default.
 
-### 2. Point the plugin at them
+You can use this directory to experiment with different characters and textures without modifying the plugin's built-in assets.
 
-*Settings → Appearance & Behavior → Spongebob Theme*
+### 2. Configure the plugin
 
-| Setting | What it does |
+Open:
+
+**Settings → Appearance & Behavior → Spongebob Theme**
+
+Configure the available options:
+
+| Setting | Description |
 |---|---|
-| **Runner image** | Your PNG sprite sheet, single image or animated GIF. Empty = built-in jellyfish. |
-| **Auto-slice** (on by default) | Removes the background (solid colour or transparent) and finds the frames on its own, even when they're unevenly spaced. Labels like "Running" are ignored. |
-| **Row / character** | Sheets with several rows (e.g. one per character) show up here as *Row 1 – 8 frames*, *Row 2 – 8 frames*, … Pick one. |
-| **Frame duration** | Animation speed. 70–100 ms is a good run cycle. |
-| **Bar height** | *Auto* (16 px for pixel art, 32 px for big sprites) or a fixed 16/20/24/32 px. |
-| **Fill tile / Track tile** | Optional tiles repeated over the loaded and empty part of the bar. Empty = drawn water. |
-| **Grid frames** (advanced) | Only with auto-slice off, for strips whose frames touch each other. |
+| **Runner image** | Select a PNG sprite sheet, a single image, or an animated GIF. Leave it empty to use the built-in jellyfish. |
+| **Auto-slice** | Enabled by default. Automatically detects animation frames, removes the surrounding background where possible, and handles unevenly spaced frames. Text labels such as "Running" are ignored. |
+| **Row / character** | Select an animation row from a multi-row sprite sheet. Available rows are displayed with their detected frame counts, for example, `Row 1 – 8 frames`. |
+| **Frame duration** | Controls the animation speed in milliseconds. A value between 70 and 100 ms is a good starting point for a running animation. |
+| **Bar height** | Set the height automatically or choose a fixed height of 16, 20, 24, or 32 px. Automatic sizing uses 16 px for typical pixel art and 32 px for larger sprites. |
+| **Fill tile** | An optional repeating texture for the loaded portion of the progress bar. |
+| **Track tile** | An optional repeating texture for the empty portion of the progress bar. |
+| **Grid frames** | An advanced option for defining sprite-sheet frames when automatic slicing is disabled and the frames touch each other. |
 
-Press **Apply**: the live preview at the bottom shows the result right away. Edited the image? Press Apply again to reload it.
-Untick *Use the underwater progress bar* to get IntelliJ's normal progress bar back while keeping the colours.
+After changing your settings, click **Apply** to update the live preview.
 
-### 3. Drawing your own pixel art
+If you edit an image externally, click **Apply** again to reload it.
 
-Specs, blank canvases and working examples are in [`templates/`](templates/README.md):
+To restore IntelliJ's standard progress bar while keeping the SpongeBob theme and editor colours, disable **Use the underwater progress bar** in the plugin settings.
 
-- runner frames are **16 × 16 px, facing right**, side by side with no spacing (the plugin mirrors them when running back);
-- tiles are **16 × 16 px** and should loop seamlessly left to right;
-- draw at 1x; the plugin scales up with crisp pixels.
+## Create your own pixel art
 
-![Pixel art guide](templates/GUIDE.png)
+The [`templates/`](templates/README.md) directory contains pixel-art specifications, blank canvases, and working examples to help you create your own animated runners and progress bar textures.
 
-## Publishing (maintainers)
+You can use tools such as [Aseprite](https://www.aseprite.org/), [LibreSprite](https://libresprite.github.io/), [Piskel](https://www.piskelapp.com/), or [Pixelorama](https://orama-interactive.itch.io/pixelorama).
 
-Every tag `vX.Y.Z` builds the plugin and creates a GitHub Release with the zip.
-Once the Marketplace secrets below exist, the same tag also publishes to the JetBrains Marketplace.
+### Runner sprite sheets
 
-**One-time signing key** (keep these files outside the repo; `*.pem`/`*.crt` are git-ignored anyway):
+The default runner format uses eight animation frames arranged horizontally.
 
-```bash
-openssl genpkey -aes-256-cbc -algorithm RSA -out private_encrypted.pem -pkeyopt rsa_keygen_bits:4096
-openssl rsa -in private_encrypted.pem -out private.pem
-openssl req -key private.pem -new -x509 -days 3650 -out chain.crt
-```
+![Pixel art template and sprite specifications](templates/GUIDE.png)
 
-**First Marketplace upload (by hand):**
+| Property | Specification |
+|---|---|
+| Default frame size | 16 × 16 px |
+| Sprite-sheet layout | Frames arranged left to right, with no spacing or padding |
+| Recommended frame count | 6–8 frames for a running cycle |
+| Facing direction | Right |
+| Background | Transparent |
+| Ground alignment | Bottom row, at `y = 15` |
 
-```bash
-export CERTIFICATE_CHAIN="$(cat chain.crt)"
-export PRIVATE_KEY="$(cat private.pem)"
-export PRIVATE_KEY_PASSWORD="your-password"
-./gradlew signPlugin   # → build/distributions/*-signed.zip, upload it on plugins.jetbrains.com
-```
+Draw the runner facing right. The plugin mirrors the animation when the character moves back to the left.
 
-**After that, automatic:** add GitHub secrets `PUBLISH_TOKEN` (Marketplace → Profile → My Tokens),
-`CERTIFICATE_CHAIN`, `PRIVATE_KEY` and `PRIVATE_KEY_PASSWORD`, then bump `pluginVersion`, tag and push.
-A version like `1.4.0-beta.1` goes to the `beta` channel instead of stable.
+Frames wider than 16 px, such as 24 × 16 px, are also supported. Set **Frames in sheet** to the appropriate number of frames when using the grid-based configuration.
 
-## Palette
+Animated GIFs are supported as well and play as-is without requiring sprite-sheet configuration.
 
-| IntelliJ element | Colour | Hex |
+### Progress bar tiles
+
+You can customize the loaded and empty portions of the bar using repeating image tiles.
+
+| Asset | Specification | Purpose |
+|---|---|---|
+| Fill tile | 16 × 16 px recommended | Repeats over the loaded portion of the bar. |
+| Track tile | 16 × 16 px recommended | Repeats over the empty portion of the bar. |
+
+For seamless repetition, ensure that the left and right edges of each tile match.
+
+The plugin scales pixel art using nearest-neighbour scaling, keeping individual pixels crisp when displayed at larger sizes.
+
+Leave either tile unset to use the plugin's default rendering for that portion of the bar.
+
+### Included templates and examples
+
+| File | Description |
+|---|---|
+| `blank-runner-sheet-8x16x16.png` | Blank canvas for an eight-frame runner. |
+| `blank-fill-tile-16.png` | Blank fill-tile canvas. |
+| `blank-track-tile-16.png` | Blank track-tile canvas. |
+| `example-runner-jellyfish-8f.png` | Example eight-frame animated jellyfish. |
+| `example-fill-tile-water.png` | Example underwater fill texture. |
+| `example-track-tile-seafloor.png` | Example seafloor track texture. |
+
+To get started, open one of the blank canvases in your preferred pixel-art editor, draw your artwork, export it as a PNG, and select it in the plugin settings.
+
+### Progress bar behaviour
+
+The plugin supports two progress modes:
+
+- **Determinate progress:** The runner moves along the loaded portion of the bar, with its right edge aligned to the current progress.
+- **Indeterminate progress:** The runner swims back and forth across the track and is mirrored when moving in the opposite direction.
+
+This allows the animation to work for both tasks with measurable progress and tasks where the completion time is unknown.
+
+## Colour palette
+
+The theme uses an underwater-inspired palette designed to keep the editor readable while retaining the playful character of SpongeBob SquarePants.
+
+| IDE element | Colour | Hex |
 |---|---|---|
 | Editor background | Deep ocean | `#073B5C` |
 | Main UI background | Midnight blue | `#041E32` |
@@ -115,18 +189,108 @@ A version like `1.4.0-beta.1` goes to the `beta` channel instead of stable.
 | Annotations | Pineapple orange | `#F47B35` |
 | Comments | Muted seafoam | `#85BDA6` |
 | Errors | Coral red | `#FF6B6B` |
-| Numbers | Seaweed green | `#9BE36B` |
-| Fields, constants | Urchin purple | `#C59BFF` |
+| Numbers | Seaweed green | `#9BE362` |
+| Fields and constants | Urchin purple | `#C59BFF` |
+
+## Publishing the plugin (maintainers)
+
+The repository is configured to build and release the plugin through GitHub Actions.
+
+Pushing a version tag in the format `vX.Y.Z` triggers a build and creates a GitHub Release containing the plugin ZIP.
+
+Once the JetBrains Marketplace publishing secrets are configured, the same release workflow can publish the plugin to the Marketplace.
+
+### 1. Generate the signing credentials
+
+Keep signing credentials outside the repository. The `.pem` and `.crt` files should remain excluded from version control.
+
+Generate the encrypted private key:
+
+```bash
+openssl genpkey \
+  -aes-256-cbc \
+  -algorithm RSA \
+  -out private_encrypted.pem \
+  -pkeyopt rsa_keygen_bits:4096
+```
+
+Export the unencrypted private key:
+
+```bash
+openssl rsa \
+  -in private_encrypted.pem \
+  -out private.pem
+```
+
+Generate the certificate:
+
+```bash
+openssl req \
+  -key private.pem \
+  -new \
+  -x509 \
+  -days 3650 \
+  -out chain.crt
+```
+
+Store the resulting files securely. The unencrypted private key should never be committed to the repository.
+
+### 2. Publish the first release manually
+
+Export the signing credentials as environment variables:
+
+```bash
+export CERTIFICATE_CHAIN="$(cat chain.crt)"
+export PRIVATE_KEY="$(cat private.pem)"
+export PRIVATE_KEY_PASSWORD="your-password"
+```
+
+Sign the plugin:
+
+```bash
+./gradlew signPlugin
+```
+
+The signed ZIP is generated in `build/distributions/`. Upload it through the [JetBrains Marketplace](https://plugins.jetbrains.com/) to publish the initial release.
+
+### 3. Enable automated Marketplace publishing
+
+Configure the following GitHub Actions repository secrets:
+
+| Secret | Description |
+|---|---|
+| `PUBLISH_TOKEN` | JetBrains Marketplace publishing token, available from Marketplace → Profile → My Tokens. |
+| `CERTIFICATE_CHAIN` | Contents of `chain.crt`. |
+| `PRIVATE_KEY` | Contents of `private.pem`. |
+| `PRIVATE_KEY_PASSWORD` | Password expected by the configured signing task. |
+
+After configuring the secrets:
+
+1. Update `pluginVersion` to the desired release version.
+2. Commit and push the changes.
+3. Create and push a version tag in the format `vX.Y.Z`.
+
+For example:
+
+```bash
+git tag v1.4.0
+git push origin v1.4.0
+```
+
+A version such as `1.4.0-beta.1` is intended for the beta channel rather than the stable channel.
 
 ## Disclaimer
 
-Unofficial, non-commercial fan project. Not affiliated with, sponsored or endorsed by Nickelodeon, Paramount or Viacom.
-SpongeBob SquarePants is a trademark of Viacom International Inc. If you are a rights holder and want something changed, please open an issue.
+This is an unofficial, non-commercial fan project. It is not affiliated with, sponsored by, or endorsed by Nickelodeon, Paramount, or Viacom.
+
+SpongeBob SquarePants and its associated characters are trademarks and intellectual property of their respective rights holders.
+
+If you are a rights holder and have concerns about this project, please open an issue in the repository.
 
 ## Credits
 
-Build setup based on the [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template) (Apache 2.0).
+The build setup is based on the [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template), licensed under Apache 2.0.
 
 ## License
 
-[MIT](LICENSE)
+This project is licensed under the [MIT License](LICENSE).
