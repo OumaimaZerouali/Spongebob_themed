@@ -57,6 +57,7 @@ class SpongeStartupActivity : ProjectActivity {
         ApplicationManager.getApplication().invokeLater {
             SpongeProgressBarInstaller.install()
             EditorVisits.getInstance().ensureStarted()
+            runCatching { FlowerWallpaper.apply() } // regenerates the tile if it went missing
         }
     }
 }

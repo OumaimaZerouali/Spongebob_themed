@@ -1,5 +1,6 @@
 package com.github.oumaimazerouali.spongebobtheme.settings
 
+import com.github.oumaimazerouali.spongebobtheme.progress.FlowerWallpaper
 import com.github.oumaimazerouali.spongebobtheme.progress.PixelImages
 import com.github.oumaimazerouali.spongebobtheme.progress.RunnerSprite
 import com.github.oumaimazerouali.spongebobtheme.progress.SpongeProgressBarInstaller
@@ -46,6 +47,9 @@ class SpongeConfigurable : Configurable {
     private val visitsBox = ComboBox(arrayOf(0, 1, 2, 3).map(::VisitOption).toTypedArray())
     private val decorationField = imageField("Choose Decoration", "A small image (e.g. a flower) that drifts through the empty bar.")
     private val recolorBox = JBCheckBox("Give every copy its own theme colour")
+    private val wallpaperBox = JBCheckBox("Also use it as wallpaper behind the code")
+    private val wallpaperPanelsBox = JBCheckBox("…and behind panels (project tree, tool windows)")
+    private val opacitySpinner = JBIntSpinner(12, 1, 60)
     private val framesSpinner = JBIntSpinner(0, 0, 256)
     private val frameMsSpinner = JBIntSpinner(100, 16, 2000, 10)
     private val barHeightBox = ComboBox(arrayOf(0, 16, 20, 24, 32).map(::HeightOption).toTypedArray())
@@ -113,6 +117,9 @@ class SpongeConfigurable : Configurable {
             .addLabeledComponent("Decoration:", decorationField)
             .addComponentToRightColumn(recolorBox)
             .addComponentToRightColumn(hint("Scattered over the empty bar, drifting and spinning now and then. Empty = none."))
+            .addComponentToRightColumn(wallpaperBox)
+            .addComponentToRightColumn(wallpaperPanelsBox)
+            .addLabeledComponent("Wallpaper opacity (%):", opacitySpinner)
             .addLabeledComponent("Fill tile:", fillField)
             .addLabeledComponent("Track tile:", trackField)
             .addComponentToRightColumn(hint("Optional pixel-art tiles, repeated sideways. Empty = drawn water. Clear a field to reset it."))
@@ -138,6 +145,9 @@ class SpongeConfigurable : Configurable {
             selectedVisits != state.editorVisits ||
             decorationField.value() != state.decorationPath ||
             recolorBox.isSelected != state.decorationRecolor ||
+            wallpaperBox.isSelected != state.wallpaperEnabled ||
+            wallpaperPanelsBox.isSelected != state.wallpaperPanels ||
+            opacitySpinner.number != state.wallpaperOpacity ||
             framesSpinner.number != state.runnerFrames ||
             frameMsSpinner.number != state.frameMillis ||
             selectedHeight != state.barHeight ||
@@ -153,6 +163,9 @@ class SpongeConfigurable : Configurable {
         state.editorVisits = selectedVisits
         state.decorationPath = decorationField.value()
         state.decorationRecolor = recolorBox.isSelected
+        state.wallpaperEnabled = wallpaperBox.isSelected
+        state.wallpaperPanels = wallpaperPanelsBox.isSelected
+        state.wallpaperOpacity = opacitySpinner.number
         state.runnerFrames = framesSpinner.number
         state.frameMillis = frameMsSpinner.number
         state.barHeight = selectedHeight
@@ -160,6 +173,7 @@ class SpongeConfigurable : Configurable {
         state.trackTilePath = trackField.value()
         RunnerSprite.invalidate()
         SpongeProgressBarInstaller.refreshAll()
+        FlowerWallpaper.apply()
     }
 
     override fun reset() {
@@ -173,6 +187,9 @@ class SpongeConfigurable : Configurable {
         visitsBox.selectedItem = VisitOption(state.editorVisits.coerceIn(0, 3))
         decorationField.text = state.decorationPath ?: ""
         recolorBox.isSelected = state.decorationRecolor
+        wallpaperBox.isSelected = state.wallpaperEnabled
+        wallpaperPanelsBox.isSelected = state.wallpaperPanels
+        opacitySpinner.number = state.wallpaperOpacity
         fillField.text = state.fillTilePath ?: ""
         trackField.text = state.trackTilePath ?: ""
         refreshRows(state.sliceRow)

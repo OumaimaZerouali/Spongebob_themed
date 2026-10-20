@@ -25,7 +25,8 @@ object FlowerField {
     private var cacheKey: Any? = null
     private var variants: List<BufferedImage> = emptyList()
 
-    private fun variants(): List<BufferedImage> {
+    /** The decoration image, background removed, in every colour variant. Empty when none is set. */
+    fun variants(): List<BufferedImage> {
         val settings = SpongeSettings.stateOrDefault()
         val src = PixelImages.load(settings.decorationPath)
         val key = listOf(src, settings.decorationRecolor)

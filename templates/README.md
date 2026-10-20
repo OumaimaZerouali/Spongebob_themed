@@ -54,3 +54,6 @@ In Settings pick the character (or **Random**), turn on **Random breaks**, and s
 
 Any small image (e.g. a flower) for the **Decoration** setting. It is scattered over the empty part of the bar,
 drifts slowly, gets a theme colour per copy (optional) and spins now and then.
+
+Tick **Also use it as wallpaper behind the code** to scatter the same image over the editor background
+(and optionally behind panels). Opacity 10–20% keeps code readable.

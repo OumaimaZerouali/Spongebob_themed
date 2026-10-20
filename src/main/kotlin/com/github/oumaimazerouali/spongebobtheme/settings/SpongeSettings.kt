@@ -38,6 +38,15 @@ class SpongeSettingsState : BaseState() {
     /** Recolour each copy of the decoration in a theme colour. */
     var decorationRecolor by property(true)
 
+    /** Use the decoration as a scattered wallpaper behind the editor (IDE background image). */
+    var wallpaperEnabled by property(false)
+
+    /** Wallpaper opacity in percent; low keeps code readable. */
+    var wallpaperOpacity by property(12)
+
+    /** Also show the wallpaper behind panels like the project tree and tool windows. */
+    var wallpaperPanels by property(false)
+
     /** Height of the bar in px (the runner is drawn this high). 0 = auto: 16 for pixel art, bigger for big sprites. */
     var barHeight by property(0)
 

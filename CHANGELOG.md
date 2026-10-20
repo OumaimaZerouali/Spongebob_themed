@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+## [1.5.0]
+### Added
+- Wallpaper: the decoration (e.g. a flower) as a scattered, seamless background behind the code, optionally behind panels too, with adjustable opacity. Uses IntelliJ's own background-image setting and never overwrites a background image you set yourself.
+
 ## [1.4.0]
 ### Added
 - Character sheets with labels: per character idle, run, sit, jump, wave and emote animations are detected automatically
