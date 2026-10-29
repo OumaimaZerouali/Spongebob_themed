@@ -22,6 +22,11 @@
                   topic="com.intellij.ide.AppLifecycleListener"/>
     </applicationListeners>
 
+    <projectListeners>
+        <listener class="com.github.oumaimazerouali.spongebobtheme.progress.WallpaperEditorListener"
+                  topic="com.intellij.openapi.fileEditor.FileEditorManagerListener"/>
+    </projectListeners>
+
     <actions>
         <action id="com.github.oumaimazerouali.spongebobtheme.VisitEditor"
                 class="com.github.oumaimazerouali.spongebobtheme.buddy.VisitEditorAction"

@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+## [1.5.1]
+### Fixed
+- The wallpaper no longer shows over images, SVG/Markdown previews and other non-code viewers; code editors and panels keep it
+
 ## [1.5.0]
 ### Added
 - Wallpaper: the decoration (e.g. a flower) as a scattered, seamless background behind the code, optionally behind panels too, with adjustable opacity. Uses IntelliJ's own background-image setting and never overwrites a background image you set yourself.
