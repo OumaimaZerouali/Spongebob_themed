@@ -7,6 +7,11 @@
 ## [1.5.1]
 ### Fixed
 - The wallpaper no longer shows over images, SVG/Markdown previews and other non-code viewers; code editors and panels keep it
+- "Run Verifications" run configuration uses `verifyPlugin` again
+
+### Documentation
+- New `CONTRIBUTING.md` and `docs/TECHNICAL.md`
+- README covers random breaks, editor visits, decoration and wallpaper, with new screenshots
 
 ## [1.5.0]
 ### Added

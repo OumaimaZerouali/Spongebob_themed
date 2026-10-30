@@ -21,11 +21,15 @@ Bring a little piece of the ocean into your IDE with deep-sea blues, SpongeBob-y
 
 ![SpongeBob editor theme](docs/editor.png)
 
-*The dark underwater editor theme.*
+*The underwater theme with the optional flower wallpaper behind the code and panels.*
+
+![A character sitting on a class declaration](docs/editor-visit.png)
+
+*An editor visit: now and then a character runs in and sits on a class.*
 
 ![Underwater progress bar](docs/progress-bar.png)
 
-*The animated underwater progress bar.*
+*The animated progress bar: indeterminate (top two) and determinate, with drifting flowers.*
 
 ## Installation
 
