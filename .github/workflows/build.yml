@@ -33,7 +33,13 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release create "$GITHUB_REF_NAME" build/distributions/*.zip --title "$GITHUB_REF_NAME" --generate-notes
+        # Re-running a tag (or a release that already exists) replaces the zip instead of failing.
+        run: |
+          if gh release view "$GITHUB_REF_NAME" > /dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" build/distributions/*.zip --clobber
+          else
+            gh release create "$GITHUB_REF_NAME" build/distributions/*.zip --title "$GITHUB_REF_NAME" --generate-notes
+          fi
       # Only runs once the Marketplace secrets are set and the first version was uploaded by hand.
       - name: Publish to JetBrains Marketplace
         if: startsWith(github.ref, 'refs/tags/v') && env.PUBLISH_TOKEN != ''

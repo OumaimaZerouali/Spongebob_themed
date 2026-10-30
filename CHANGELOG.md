@@ -8,6 +8,7 @@
 ### Fixed
 - The wallpaper no longer shows over images, SVG/Markdown previews and other non-code viewers; code editors and panels keep it
 - "Run Verifications" run configuration uses `verifyPlugin` again
+- Release workflow no longer fails when the GitHub release already exists; it replaces the zip
 
 ### Documentation
 - New `CONTRIBUTING.md` and `docs/TECHNICAL.md`
