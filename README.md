@@ -11,9 +11,12 @@ Bring a little piece of the ocean into your IDE with deep-sea blues, SpongeBob-y
 - **Underwater IDE theme**: A dark interface inspired by the ocean, with deep blues, cyan accents, and SpongeBob's signature yellow.
 - **Custom editor colour scheme**: Carefully chosen colours for keywords, functions, strings, annotations, comments, and more.
 - **Animated underwater progress bar**: A custom progress bar featuring water, drifting light rays, and bubbles.
-- **Custom animated runners**: Replace the default jellyfish with SpongeBob, Patrick, Gary, your own pixel art, or any other character you like.
+- **Custom animated runners**: Replace the default jellyfish with your own pixel art, a sprite sheet or an animated GIF. Labelled sheets add idle, sit, jump, wave and emote animations.
 - **Custom progress bar tiles**: Use your own water and seafloor textures to personalize the loaded and empty portions of the bar.
 - **Automatic sprite-sheet detection**: Automatically detect animation frames, including frames with uneven spacing.
+- **Random breaks**: The runner stops now and then to idle, sit, jump, wave or show an emote.
+- **Editor visits**: Now and then the character runs into your code, sits on a class declaration and runs off again.
+- **Drifting decoration & wallpaper**: A small image (e.g. a flower) drifts through the bar, and can be scattered behind your code as a wallpaper. Images and previews stay clean.
 - **Live preview**: Preview your custom runner and progress bar directly in the plugin settings.
 
 ![SpongeBob editor theme](docs/editor.png)
@@ -81,7 +84,7 @@ spongebob_theme/
     └── track.png       # Optional: empty portion of the bar
 ```
 
-The `my-sprites/` directory is included in `.gitignore`, so your local artwork won't be committed or pushed to the repository by default.
+Want to keep your artwork local? Add `my-sprites/` to your `.gitignore`.
 
 You can use this directory to experiment with different characters and textures without modifying the plugin's built-in assets.
 
@@ -97,11 +100,15 @@ Configure the available options:
 |---|---|
 | **Runner image** | Select a PNG sprite sheet, a single image, or an animated GIF. Leave it empty to use the built-in jellyfish. |
 | **Auto-slice** | Enabled by default. Automatically detects animation frames, removes the surrounding background where possible, and handles unevenly spaced frames. Text labels such as "Running" are ignored. |
-| **Row / character** | Select an animation row from a multi-row sprite sheet. Available rows are displayed with their detected frame counts, for example, `Row 1 – 8 frames`. |
+| **Character** | Pick a character from the sheet, or **Random** for a different one each time. Labelled sheets show their animations, e.g. `Character 1 – idle, run, sit, jump, wave, emote`. |
+| **Random breaks** | Let the runner stop now and then for idle, sit, jump, wave and emote animations (when the sheet has them). |
+| **Editor visits** | How often the character visits your code and sits on a class: Off, Rarely (~6 min), Sometimes (~3 min) or Often (~1 min). Try it right away with *Tools → Spongebob Theme: Visit This Editor*. |
 | **Frame duration** | Controls the animation speed in milliseconds. A value between 70 and 100 ms is a good starting point for a running animation. |
 | **Bar height** | Set the height automatically or choose a fixed height of 16, 20, 24, or 32 px. Automatic sizing uses 16 px for typical pixel art and 32 px for larger sprites. |
 | **Fill tile** | An optional repeating texture for the loaded portion of the progress bar. |
 | **Track tile** | An optional repeating texture for the empty portion of the progress bar. |
+| **Decoration** | An optional small image (e.g. a flower) that drifts through the empty part of the bar, each copy in its own theme colour. |
+| **Wallpaper** | Also scatter the decoration behind your code, and optionally behind panels. Keep the opacity around 10–20% so code stays readable. Your own background image is never overwritten. |
 | **Grid frames** | An advanced option for defining sprite-sheet frames when automatic slicing is disabled and the frames touch each other. |
 
 After changing your settings, click **Apply** to update the live preview.
@@ -133,7 +140,7 @@ The default runner format uses eight animation frames arranged horizontally.
 
 Draw the runner facing right. The plugin mirrors the animation when the character moves back to the left.
 
-Frames wider than 16 px, such as 24 × 16 px, are also supported. Set **Frames in sheet** to the appropriate number of frames when using the grid-based configuration.
+Frames wider than 16 px, such as 24 × 16 px, are also supported. Set **Grid frames** to the appropriate number of frames when using the grid-based configuration.
 
 Animated GIFs are supported as well and play as-is without requiring sprite-sheet configuration.
 
@@ -162,6 +169,7 @@ Leave either tile unset to use the plugin's default rendering for that portion o
 | `example-runner-jellyfish-8f.png` | Example eight-frame animated jellyfish. |
 | `example-fill-tile-water.png` | Example underwater fill texture. |
 | `example-track-tile-seafloor.png` | Example seafloor track texture. |
+| `example-labelled-sheet.png` | Example sheet with two characters and six labelled animations each. |
 
 To get started, open one of the blank canvases in your preferred pixel-art editor, draw your artwork, export it as a PNG, and select it in the plugin settings.
 
@@ -191,7 +199,7 @@ The theme uses an underwater-inspired palette designed to keep the editor readab
 | Annotations | Pineapple orange | `#F47B35` |
 | Comments | Muted seafoam | `#85BDA6` |
 | Errors | Coral red | `#FF6B6B` |
-| Numbers | Seaweed green | `#9BE362` |
+| Numbers | Seaweed green | `#9BE36B` |
 | Fields and constants | Urchin purple | `#C59BFF` |
 
 ## Publishing the plugin (maintainers)
@@ -288,6 +296,13 @@ This is an unofficial, non-commercial fan project. It is not affiliated with, sp
 SpongeBob SquarePants and its associated characters are trademarks and intellectual property of their respective rights holders.
 
 If you are a rights holder and have concerns about this project, please open an issue in the repository.
+
+## Documentation
+
+- [docs/TECHNICAL.md](docs/TECHNICAL.md): how the plugin works inside.
+- [CONTRIBUTING.md](CONTRIBUTING.md): build, run and change it yourself.
+- [templates/README.md](templates/README.md): pixel-art specs and the labelled sheet layout.
+- [CHANGELOG.md](CHANGELOG.md): what changed in each version.
 
 ## Credits
 
